@@ -60,7 +60,7 @@ public class ProjectController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Project> createProject(@PathVariable Long projectId,
+	public ResponseEntity<Project> createProject(
 			@RequestHeader("Authorization") String jwt, @RequestBody Project project) throws Exception {
 		User user = userServices.findUserProfileByJwt(jwt);
 		Project createdproject = projectServices.createProject(project, user);
@@ -68,7 +68,7 @@ public class ProjectController {
 		return new ResponseEntity<>(createdproject, HttpStatus.OK);
 	}
 
-	@PatchMapping("{projectId}")
+	@PatchMapping("/{projectId}")
 	public ResponseEntity<Project> updateProject(@PathVariable Long projectId,
 			@RequestHeader("Authorization") String jwt, @RequestBody Project project) throws Exception {
 		User user = userServices.findUserProfileByJwt(jwt);
@@ -77,12 +77,12 @@ public class ProjectController {
 		return new ResponseEntity<>(updatedproject, HttpStatus.OK);
 	}
 
-	@DeleteMapping("{projectId}")
+	@DeleteMapping("/{projectId}")
 	public ResponseEntity<MessageResponse> deleteProject(@PathVariable Long projectId,
 			@RequestHeader("Authorization") String jwt) throws Exception {
 		User user = userServices.findUserProfileByJwt(jwt);
 		projectServices.deleteProject(projectId, user.getId());
-		MessageResponse response = new MessageResponse("project deleted sucessfully");
+		MessageResponse response = new MessageResponse("project deleted sucessfully", projectId);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
